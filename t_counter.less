@@ -1,0 +1,92 @@
+
+/* ----- FlipClock ----- */
+
+@clock-flip-font-family: "Helvetica Neue", Helvetica, sans-serif;
+@clock-flip-font-size: 30px;
+@clock-flip-border-radius: 1px;
+@clock-digit-gap: -20px;
+
+@clock-height: (@clock-flip-font-size * 1.2);
+@clock-flip-width: (@clock-flip-font-size * 0.5);
+@clock-flip-margin: (@clock-digit-gap / 3);
+@clock-flip-section-width: (2 * (@clock-flip-width + 0 * @clock-flip-margin));
+
+@clock-flip-bg: #052624;
+@clock-flip-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+@clock-flip-font-color: #ffffff;
+@clock-flip-font-shadow: 0 1px 2px #ccc;
+
+.t_counter.flip-clock-wrapper{
+	font-family: @clock-flip-font-family;
+	width: auto;
+}
+
+.t_counter.flip-clock-wrapper ul{
+  height: @clock-height;
+  margin: 0 @clock-flip-margin;
+  width: @clock-flip-width;
+  box-shadow: @clock-flip-shadow;
+}
+
+.t_counter.flip-clock-wrapper ul li{
+  line-height: @clock-height;
+  }
+
+.t_counter.flip-clock-wrapper ul li a div div.inn{
+  background-color: @clock-flip-bg;
+  color: @clock-flip-font-color;
+  font-size: @clock-flip-font-size;
+  text-shadow: @clock-flip-font-shadow;
+  }
+
+.t_counter.flip-clock-wrapper ul,
+.t_counter.flip-clock-wrapper ul li a div div.inn{
+  border-radius: @clock-flip-border-radius;
+}
+
+.t_counter.flip-clock-wrapper ul li a div.down{
+  border-bottom-left-radius: @clock-flip-border-radius;
+  border-bottom-right-radius: @clock-flip-border-radius;
+ }
+
+.t_counter.flip-clock-wrapper ul li a div.up:after{
+  top: ((@clock-height / 2) - 1px);
+ }
+
+  
+ .t_counter .flip-clock-divider,
+ .t_counter .flip-clock-divider .flip-clock-dot.comma  {
+    width: @clock-digit-gap*3;
+    height: @clock-height;
+    font-size: @clock-flip-font-size;
+    left: 0;
+}
+.t_counter .flip-clock-divider .flip-clock-dot.comma  {
+	display: none; //comment this to show the thousands separator 
+}
+/* ----- FlipClock ----- */
+
+
+
+#t_counter_wrapper table{
+	
+	width: 100%;
+	background: @clock-flip-bg;
+	color: @clock-flip-font-color;
+	font-size: @clock-flip-font-size;
+	font-family: @clock-flip-font-family;
+}
+
+#t_counter_wrapper th{
+	  font-size: @clock-flip-font-size * 1.05;
+	  font-weight: thin;
+}
+#t_counter_wrapper td{
+	  font-size: @clock-flip-font-size * 0.85;
+}
+
+#t_counter_wrapper td div { float: left;}
+
+#t_counter_wrapper .t_counter_label{
+	margin: 0.5em 0 0 0.5em;
+}
