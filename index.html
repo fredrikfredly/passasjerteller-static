@@ -16,8 +16,10 @@
     top: 50%;
     left: 50%;
     transform-origin: center center;
-    width: 620px;
+    display: inline-block;
+    white-space: nowrap;
   }
+  #t_counter_wrapper table { width: auto !important; }
 </style>
 </head>
 <body>
@@ -157,8 +159,8 @@ function fitScale() {
   var root = document.getElementById('scale-root');
   if (!root) return;
   root.style.transform = 'translate(-50%, -50%) scale(1)';
-  var w = root.offsetWidth;
-  var h = root.offsetHeight;
+  var w = Math.max(root.offsetWidth, root.scrollWidth);
+  var h = Math.max(root.offsetHeight, root.scrollHeight);
   if (!w || !h) return;
   var scale = Math.min(window.innerWidth / w, window.innerHeight / h);
   root.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
@@ -170,13 +172,17 @@ $(document).ready(function() {
       var data = computeData(csvText);
       console.log(data);
       startCounter(data);
-      setTimeout(fitScale, 100);
-      setTimeout(fitScale, 500);
+      var tries = 0;
+      var iv = setInterval(function() {
+        fitScale();
+        if (++tries > 30) clearInterval(iv);
+      }, 200);
     })
     .fail(function() {
       console.error('Kunne ikke laste t_counter.csv');
     });
   window.addEventListener('resize', fitScale);
+  window.addEventListener('load', fitScale);
 });
 </script>
 
