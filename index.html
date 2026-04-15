@@ -9,9 +9,20 @@
 <link rel="stylesheet/less" type="text/css" href="t_counter.less" />
 <script>less = { env: "production" };</script>
 <script src="less.min.js" type="text/javascript"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: #052624; overflow: hidden; width: 100%; height: 100%; }
+  #scale-root {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: center center;
+    width: 620px;
+  }
+</style>
 </head>
-<body style="margin:0;padding:0">
+<body>
 
+<div id="scale-root">
 <div id="t_counter_wrapper">
   <table>
   <tr>
@@ -44,6 +55,7 @@
     <td><div id="totvalue" class="t_counter"></div></td>
   </tr>
   </table>
+</div>
 </div>
 
 <script src="jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
@@ -141,16 +153,30 @@ function startCounter(data) {
   }
 }
 
+function fitScale() {
+  var root = document.getElementById('scale-root');
+  if (!root) return;
+  root.style.transform = 'translate(-50%, -50%) scale(1)';
+  var w = root.offsetWidth;
+  var h = root.offsetHeight;
+  if (!w || !h) return;
+  var scale = Math.min(window.innerWidth / w, window.innerHeight / h);
+  root.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
+}
+
 $(document).ready(function() {
   $.ajax({ url: 't_counter.csv', dataType: 'text', cache: false })
     .done(function(csvText) {
       var data = computeData(csvText);
       console.log(data);
       startCounter(data);
+      setTimeout(fitScale, 100);
+      setTimeout(fitScale, 500);
     })
     .fail(function() {
       console.error('Kunne ikke laste t_counter.csv');
     });
+  window.addEventListener('resize', fitScale);
 });
 </script>
 
