@@ -165,10 +165,31 @@ function init(data) {
   }
 }
 
-fetch('t_counter.csv?t=' + Date.now())
-  .then(function(r) { return r.text(); })
+var REMOTE_CSV = 'https://passasjerteller-hau.vercel.app/api/csv';
+var FALLBACK_CSV = 't_counter.csv';
+
+function loadCsv() {
+  return fetch(REMOTE_CSV + '?t=' + Date.now(), { cache: 'no-store' })
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .catch(function(e) {
+      console.warn('Remote CSV failed, falling back to static', e);
+      return fetch(FALLBACK_CSV + '?t=' + Date.now()).then(function(r){ return r.text(); });
+    });
+}
+
+loadCsv()
   .then(function(txt) { init(computeData(txt)); })
   .catch(function(e) { console.error('CSV load failed', e); });
+
+setInterval(function() {
+  loadCsv().then(function(txt) {
+    var d = computeData(txt);
+    state.i = d.i; state.u = d.u; render(); fitScale();
+  }).catch(function(){});
+}, 30 * 60 * 1000);
 
 window.addEventListener('resize', fitScale);
 window.addEventListener('load', fitScale);
